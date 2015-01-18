@@ -19,15 +19,23 @@
     (apply str (concat ys xs))))
 
 (defn get-encoded-char [c x]
-  "return encoded char for char c and x cipher char"
+  "return encoded char for char c and cipher char x"
   (let [i (.indexOf alphabets c)
         j (.indexOf alphabets x)
         rot (rotate-string alphabets i)]
     (first (rotate-string rot j))))
+
+(defn get-decoded-char [c x]
+  "return decoded char for char c and cipher char x"
+  (let [i (.indexOf alphabets x)
+        rot (rotate-string alphabets i)
+        j (.indexOf (seq rot) c)]
+    (nth alphabets j)))
 
 (defn encode [secret msg]
   (let [cipher (repeat-string secret (count msg))]
     (apply str (map get-encoded-char msg cipher))))
 
 (defn decode [secret msg]
-  "decodeme")
+  (let [cipher (repeat-string secret (count msg))]
+    (apply str (map get-decoded-char msg cipher))))
